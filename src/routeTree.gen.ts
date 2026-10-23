@@ -10,17 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as GerenciarRouteImport } from './routes/gerenciar'
 import { Route as ProcessoIdRouteImport } from './routes/processo.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GerenciarRoute = GerenciarRouteImport.update({
-  id: '/gerenciar',
-  path: '/gerenciar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProcessoIdRoute = ProcessoIdRouteImport.update({
@@ -31,31 +25,27 @@ const ProcessoIdRoute = ProcessoIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/gerenciar': typeof GerenciarRoute
   '/processo/$id': typeof ProcessoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/gerenciar': typeof GerenciarRoute
   '/processo/$id': typeof ProcessoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/gerenciar': typeof GerenciarRoute
   '/processo/$id': typeof ProcessoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gerenciar' | '/processo/$id'
+  fullPaths: '/' | '/processo/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gerenciar' | '/processo/$id'
-  id: '__root__' | '/' | '/gerenciar' | '/processo/$id'
+  to: '/' | '/processo/$id'
+  id: '__root__' | '/' | '/processo/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  GerenciarRoute: typeof GerenciarRoute
   ProcessoIdRoute: typeof ProcessoIdRoute
 }
 
@@ -66,13 +56,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/gerenciar': {
-      id: '/gerenciar'
-      path: '/gerenciar'
-      fullPath: '/gerenciar'
-      preLoaderRoute: typeof GerenciarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/processo/$id': {
@@ -87,7 +70,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  GerenciarRoute: GerenciarRoute,
   ProcessoIdRoute: ProcessoIdRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Search, Star, History, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { TemplateList } from "@/components/TemplateList";
+import { StatsDialog } from "@/components/StatsDialog";
 import { CategoryIcon } from "@/components/icons";
-import { actions, normalize, useStore } from "@/lib/store";
+import { normalize, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { categories, templates, favorites, recents } = useStore();
+  const { categories, templates, isAdmin } = useStore();
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("all");
 
@@ -35,9 +35,6 @@ function Index() {
       })
       .sort((a, b) => a.title.localeCompare(b.title, "pt-BR"));
   }, [q, cat, templates, categories]);
-
-  const favList = templates.filter((t) => favorites.includes(t.id));
-  const recentList = recents.map((id) => templates.find((t) => t.id === id)).filter((t) => !!t);
 
   return (
     <div className="space-y-8">
@@ -58,10 +55,12 @@ function Index() {
             </button>
           )}
         </div>
-        <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
-          <span><strong className="text-foreground">{categories.length}</strong> tipos de processo</span>
-          <span><strong className="text-foreground">{templates.length}</strong> respostas disponíveis</span>
-          <span><strong className="text-foreground">{favList.length}</strong> favoritas</span>
+        <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-sm text-muted-foreground">
+          <div className="flex flex-wrap gap-x-6 gap-y-1">
+            <span><strong className="text-foreground">{categories.length}</strong> tipos de processo</span>
+            <span><strong className="text-foreground">{templates.length}</strong> respostas disponíveis</span>
+          </div>
+          {isAdmin ? <StatsDialog /> : null}
         </div>
       </section>
 
@@ -106,19 +105,6 @@ function Index() {
                 );
               })}
             </div>
-          </section>
-
-          <section className="space-y-3">
-            <h2 className="flex items-center gap-2 text-lg font-semibold"><Star className="h-5 w-5 text-warning" /> Favoritos</h2>
-            <TemplateList templates={favList} showCategory empty="Clique na estrela de uma resposta para adicioná-la aos favoritos." />
-          </section>
-
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="flex items-center gap-2 text-lg font-semibold"><History className="h-5 w-5 text-primary" /> Recentes</h2>
-              {recentList.length > 0 && <Button size="sm" variant="ghost" onClick={actions.clearRecents}>Limpar</Button>}
-            </div>
-            <TemplateList templates={recentList} showCategory empty="As respostas consultadas aparecerão aqui." />
           </section>
         </>
       )}
