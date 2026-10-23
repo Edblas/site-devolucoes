@@ -5,7 +5,7 @@ describe("modelos", () => {
   it("cadastra 13 tipos de processo, com 22 respostas de Pessoa PJ", () => {
     const m = seedModels();
     expect(m.categories).toHaveLength(13);
-    expect(m.categories[0].name).toBe("Pessoa PJ");
+    expect(m.categories[0]?.name).toBe("Pessoa PJ");
     expect(m.templates.filter((t) => t.categoryId === "pessoa-pj")).toHaveLength(22);
   });
   it("detecta e preenche campos variáveis", () => {

@@ -108,7 +108,7 @@ function Manage() {
                     className="flex gap-1"
                     onSubmit={(e) => {
                       e.preventDefault();
-                      if (!renaming.name.trim()) return toast.error("Informe um nome.");
+                      if (!renaming.name.trim()) { toast.error("Informe um nome."); return; }
                       actions.updateCategory(c.id, { name: renaming.name.trim() });
                       setRenaming(null);
                       toast.success("Processo renomeado.");
@@ -135,7 +135,7 @@ function Manage() {
             className="flex gap-2"
             onSubmit={(e) => {
               e.preventDefault();
-              if (!newCat.trim()) return toast.error("Informe o nome do novo processo.");
+              if (!newCat.trim()) { toast.error("Informe o nome do novo processo."); return; }
               actions.addCategory(newCat.trim());
               setNewCat("");
               toast.success("Processo criado.");
@@ -210,7 +210,7 @@ function Editor({ initial, onDone }: { initial: Partial<Template>; onDone: () =>
 
   const insertField = () => {
     const name = newField.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
-    if (!name) return toast.error("Informe o nome do campo.");
+    if (!name) { toast.error("Informe o nome do campo."); return; }
     const tag = `{{${name}}}`;
     const el = textRef.current;
     const pos = el?.selectionStart ?? text.length;
@@ -221,7 +221,7 @@ function Editor({ initial, onDone }: { initial: Partial<Template>; onDone: () =>
   const save = () => {
     if (!title.trim() || !text.trim() || !categoryId) {
       setErr(true);
-      return toast.error("Preencha o título e o texto da resposta.");
+      { toast.error("Preencha o título e o texto da resposta."); return; }
     }
     actions.saveTemplate({ id: initial.id, categoryId, title: title.trim(), text: text.trim() });
     toast.success(initial.id ? "Resposta atualizada." : "Resposta criada.");
