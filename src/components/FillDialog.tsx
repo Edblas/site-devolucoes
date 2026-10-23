@@ -24,7 +24,7 @@ export function FillDialog({ template, onClose }: { template: Template | null; o
   const complete = missing.length === 0;
 
   useEffect(() => {
-    if (template && complete) setOutput(fillTemplate(template.text, Object.fromEntries(fields.map((f) => [f, values[f].trim()]))));
+    if (template && complete) setOutput(fillTemplate(template.text, Object.fromEntries(fields.map((f) => [f, (values[f] ?? "").trim()]))));
     else setOutput("");
   }, [values, template, complete, fields]);
 

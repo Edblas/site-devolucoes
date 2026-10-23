@@ -13,7 +13,7 @@ export const FIELD_RE = /\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g;
 
 export function extractFields(text: string): string[] {
   const out: string[] = [];
-  for (const m of text.matchAll(FIELD_RE)) if (!out.includes(m[1])) out.push(m[1]);
+  for (const m of text.matchAll(FIELD_RE)) if (!out.includes(m[1]!)) out.push(m[1]!);
   return out;
 }
 
@@ -135,7 +135,7 @@ export const actions = {
       recents: state.recents.filter((f) => !removed.has(f)),
     });
   },
-  saveTemplate(t: Omit<Template, "id"> & { id?: string }) {
+  saveTemplate(t: Omit<Template, "id"> & { id?: string | undefined }) {
     load();
     if (t.id && state.templates.some((x) => x.id === t.id)) {
       set({ templates: state.templates.map((x) => (x.id === t.id ? (t as Template) : x)) });
