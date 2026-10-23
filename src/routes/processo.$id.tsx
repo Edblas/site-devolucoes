@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowLeft, ArrowDownAZ, ArrowUpZA, Plus, Search } from "lucide-react";
+import { ArrowLeft, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TemplateList } from "@/components/TemplateList";
@@ -68,7 +68,6 @@ function ProcessPage() {
         <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filtrar respostas deste processo..." className="bg-card pl-9" />
       </div>
       <TemplateList templates={list} empty="Nenhuma resposta cadastrada neste processo. Use “Nova resposta” para adicionar." />
-      <span className="sr-only">{sort === "az" ? <ArrowDownAZ /> : <ArrowUpZA />}</span>
     </div>
   );
 }
